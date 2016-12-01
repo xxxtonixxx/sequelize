@@ -1,12 +1,13 @@
 'use strict';
 
 /* jshint -W110 */
-var chai = require('chai')
-  , expect = chai.expect
-  , Support = require(__dirname + '/../../support')
-  , dialect = Support.getTestDialect()
-  , _ = require('lodash')
-  , QueryGenerator = require('../../../../lib/dialects/mysql/query-generator');
+const chai = require('chai');
+const expect = chai.expect;
+const Support = require(__dirname + '/../../support');
+const dialect = Support.getTestDialect();
+const _ = require('lodash');
+const QueryGenerator = require('../../../../lib/dialects/mysql/query-generator');
+const Sequelize = require('../../../../lib/sequelize');
 
 if (dialect === 'mysql') {
   describe('[MYSQL Specific] QueryGenerator', function() {
@@ -164,7 +165,11 @@ if (dialect === 'mysql') {
           expectation: "SELECT * FROM `myTable` WHERE foo='bar';",
           context: QueryGenerator
         }, {
-          arguments: ['myTable', {order: 'id DESC'}],
+          arguments: ['myTable', {order: [['id', 'DESC']]}],
+          expectation: 'SELECT * FROM `myTable` ORDER BY `id` DESC;',
+          context: QueryGenerator
+        }, {
+          arguments: ['myTable', {order: Sequelize.literal('id DESC')}],
           expectation: 'SELECT * FROM `myTable` ORDER BY id DESC;',
           context: QueryGenerator
         }, {
@@ -264,8 +269,8 @@ if (dialect === 'mysql') {
           context: QueryGenerator,
           needsSequelize: true
         }, {
-          arguments: ['myTable', {group: 'name', order: 'id DESC'}],
-          expectation: 'SELECT * FROM `myTable` GROUP BY name ORDER BY id DESC;',
+          arguments: ['myTable', {group: 'name', order: [['id', 'DESC']]}],
+          expectation: 'SELECT * FROM `myTable` GROUP BY name ORDER BY `id` DESC;',
           context: QueryGenerator
         }, {
           title: 'HAVING clause works with string replacements',

@@ -1475,7 +1475,7 @@ describe(Support.getTestDialectTeaser('Model'), function() {
                   { username: 'Paul', secretValue: '23', uniqueName: '2'}];
 
       return this.User.bulkCreate(data, { fields: ['username', 'uniqueName'] }).then(function() {
-        return self.User.findAll({order: 'id'}).then(function(users) {
+        return self.User.findAll({order: ['id']}).then(function(users) {
           expect(users.length).to.equal(2);
           expect(users[0].username).to.equal('Peter');
           expect(users[0].secretValue).to.be.null;
@@ -1491,7 +1491,7 @@ describe(Support.getTestDialectTeaser('Model'), function() {
                   { username: 'Paul', secretValue: '23', uniqueName: '2'}];
 
       return this.User.bulkCreate(data).then(function() {
-        return self.User.findAll({order: 'id'}).then(function(users) {
+        return self.User.findAll({order: ['id']}).then(function(users) {
           expect(users.length).to.equal(2);
           expect(users[0].username).to.equal('Peter');
           expect(users[0].secretValue).to.equal('42');
@@ -1507,7 +1507,7 @@ describe(Support.getTestDialectTeaser('Model'), function() {
                   { username: 'Paul', secretValue: '23', uniqueName: '2'}];
 
       return this.User.bulkCreate(data).then(function() {
-        return self.User.findAll({order: 'id'}).then(function(users) {
+        return self.User.findAll({order: ['id']}).then(function(users) {
           expect(users.length).to.equal(2);
           users.forEach(function (user) {
             expect(user.isNewRecord).to.equal(false);
@@ -1523,7 +1523,7 @@ describe(Support.getTestDialectTeaser('Model'), function() {
                   { username: 'Paul', data: quote, uniqueName: '2'}];
 
       return this.User.bulkCreate(data).then(function() {
-        return self.User.findAll({order: 'id'}).then(function(users) {
+        return self.User.findAll({order: ['id']}).then(function(users) {
           expect(users.length).to.equal(2);
           expect(users[0].username).to.equal('Peter');
           expect(users[0].data).to.equal(quote);
@@ -1540,7 +1540,7 @@ describe(Support.getTestDialectTeaser('Model'), function() {
                   { username: 'Paul', data: quote, uniqueName: '2'}];
 
       return this.User.bulkCreate(data).then(function() {
-        return self.User.findAll({order: 'id'}).then(function(users) {
+        return self.User.findAll({order: ['id']}).then(function(users) {
           expect(users.length).to.equal(2);
           expect(users[0].username).to.equal('Peter');
           expect(users[0].data).to.equal(quote);
@@ -1557,7 +1557,7 @@ describe(Support.getTestDialectTeaser('Model'), function() {
                   { username: 'Paul', data: json, uniqueName: '2'}];
 
       return this.User.bulkCreate(data).then(function() {
-        return self.User.findAll({order: 'id'}).then(function(users) {
+        return self.User.findAll({order: ['id']}).then(function(users) {
           expect(users.length).to.equal(2);
           expect(users[0].username).to.equal('Peter');
           expect(users[0].data).to.equal(json);
@@ -1583,7 +1583,7 @@ describe(Support.getTestDialectTeaser('Model'), function() {
                   { username: 'Paul', uniqueName: '2'}];
 
       return this.User.bulkCreate(data).then(function() {
-        return self.User.findAll({order: 'id'}).then(function(users) {
+        return self.User.findAll({order: ['id']}).then(function(users) {
           expect(users.length).to.equal(2);
           expect(users[0].username).to.equal('Peter');
           expect(parseInt(+users[0].createdAt / 5000, 10)).to.be.closeTo(parseInt(+new Date() / 5000, 10), 1.5);
@@ -1674,7 +1674,7 @@ describe(Support.getTestDialectTeaser('Model'), function() {
           {id: 5},
           {id: 10}
         ]).then(function() {
-          return Worker.findAll({order: 'id ASC'}).then(function(workers) {
+          return Worker.findAll({order: ['id', 'ASC']}).then(function(workers) {
             expect(workers[0].id).to.equal(5);
             expect(workers[1].id).to.equal(10);
           });
@@ -1712,7 +1712,7 @@ describe(Support.getTestDialectTeaser('Model'), function() {
         return this.User.bulkCreate(data, { fields: ['uniqueName', 'secretValue'] }).then(function() {
           data.push({ uniqueName: 'Michael', secretValue: '26' });
           return self.User.bulkCreate(data, { fields: ['uniqueName', 'secretValue'], ignoreDuplicates: true }).then(function() {
-            return self.User.findAll({order: 'id'}).then(function(users) {
+            return self.User.findAll({order: ['id']}).then(function(users) {
               expect(users.length).to.equal(3);
               expect(users[0].uniqueName).to.equal('Peter');
               expect(users[0].secretValue).to.equal('42');
@@ -1852,7 +1852,7 @@ describe(Support.getTestDialectTeaser('Model'), function() {
         expect(m.secret).to.be.eql(M2.secret);
       });
     });
-    
+
     it('should return autoIncrement primary key (create)', function() {
       var Maya = this.sequelize.define('Maya', {});
 
@@ -1863,7 +1863,7 @@ describe(Support.getTestDialectTeaser('Model'), function() {
         expect(m.id).to.be.eql(1);
       });
     });
-  
+
     it('should return autoIncrement primary key (bulkCreate)', function() {
       var Maya = this.sequelize.define('Maya', {});
 

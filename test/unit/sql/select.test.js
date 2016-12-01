@@ -1,13 +1,14 @@
 'use strict';
 
 /* jshint -W110 */
-var Support   = require(__dirname + '/../support')
-  , DataTypes = require(__dirname + '/../../../lib/data-types')
-  , Model = require(__dirname + '/../../../lib/model')
-  , util = require('util')
-  , expectsql = Support.expectsql
-  , current   = Support.sequelize
-  , sql       = current.dialect.QueryGenerator;
+const Support = require(__dirname + '/../support');
+const DataTypes = require(__dirname + '/../../../lib/data-types');
+const Model = require(__dirname + '/../../../lib/model');
+const Sequelize = require('../../../lib/sequelize');
+const util = require('util');
+const expectsql = Support.expectsql;
+const current = Support.sequelize;
+const sql = current.dialect.QueryGenerator;
 
 // Notice: [] will be replaced by dialect specific tick/quote character when there is not dialect specific expectation but only a default expectation
 
@@ -285,7 +286,7 @@ suite(Support.getTestDialectTeaser('SQL'), function() {
           ['first_name', 'firstName'],
           ['last_name', 'lastName']
         ],
-        order: '[user].[last_name] ASC'.replace(/\[/g, Support.sequelize.dialect.TICK_CHAR_LEFT).replace(/\]/g, Support.sequelize.dialect.TICK_CHAR_RIGHT),
+        order: Sequelize.literal('[user].[last_name] ASC'.replace(/\[/g, Support.sequelize.dialect.TICK_CHAR_LEFT).replace(/\]/g, Support.sequelize.dialect.TICK_CHAR_RIGHT)),
         limit: 30,
         offset: 10,
         hasMultiAssociation: true,//must be set only for mssql dialect here
